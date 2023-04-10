@@ -40,6 +40,7 @@ dependencies:
   sizer: ^2.0.15
   pinput: ^2.2.31
   shared_preferences: ^2.1.0
+  dropdown_plus: ^0.0.9
 
 
 dev_dependencies:

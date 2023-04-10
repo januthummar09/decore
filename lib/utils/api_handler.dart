@@ -130,11 +130,11 @@ class API {
 
         if (status) {
           var data = List<Map<String, dynamic>>.from(result['data']);
-          debugPrint('before convert List data ------------->>$data');
+          // debugPrint('before convert List data ------------->>$data');
 
           var list = data.map((e) => Product.fromJson(e)).toList();
 
-          debugPrint('after convert List data ------------->>$list');
+          // debugPrint('after convert List data ------------->>$list');
 
           return Result(isSuccess: true, data: list);
         } else {

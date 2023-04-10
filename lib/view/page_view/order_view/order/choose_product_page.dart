@@ -35,19 +35,23 @@ class _ChooseProductPageState extends State<ChooseProductPage> {
                   const Icon(Icons.search, color: color94),
                   widthSpace10,
                   Expanded(
-                    child: TextField(
-                      controller: controller.searchController,
-                      cursorColor: primaryColor,
-                      style: color94Medium16,
-                      // textInputAction: TextInputAction.search,
-                      onChanged: (value) {
-                        controller.searchProduct(value);
+                    child: GetBuilder(
+                      builder: (ChooseProductController controller) {
+                        return TextField(
+                          controller: controller.searchController,
+                          cursorColor: primaryColor,
+                          style: color94Medium16,
+                          // textInputAction: TextInputAction.search,
+                          onChanged: (value) {
+                            controller.searchProduct(value);
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Search',
+                            hintStyle: color94Medium16,
+                          ),
+                        );
                       },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: color94Medium16,
-                      ),
                     ),
                   ),
                 ],
@@ -62,7 +66,6 @@ class _ChooseProductPageState extends State<ChooseProductPage> {
                       return ListTile(
                         onTap: () {
                           var data = controller.products[index];
-
                           Get.toNamed(RoutesName.orderMeterScreen, arguments: {
                             'productName': data,
                           });

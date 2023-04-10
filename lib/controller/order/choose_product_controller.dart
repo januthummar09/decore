@@ -1,5 +1,6 @@
 import 'package:decore/model/product_model.dart';
 import 'package:decore/utils/api_handler.dart';
+import 'package:decore/utils/constant.dart';
 import 'package:decore/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,12 @@ class ChooseProductController extends GetxController {
           title: Text(response.message ?? ''),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: primaryColor,
+                ),
+              ),
               onPressed: () {
                 Get.toNamed(RoutesName.loginScreen);
               },
@@ -47,9 +53,10 @@ class ChooseProductController extends GetxController {
     if (query.isNotEmpty) {
       products = suggestion;
       update();
-    } else {
-      products = products;
-      update();
     }
+    // else {
+    //   products = products;
+    //   update();
+    // }
   }
 }

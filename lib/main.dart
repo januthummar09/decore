@@ -28,7 +28,8 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-// home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        // home: const Demo(),
+
         initialRoute: RoutesName.splashScreen,
         getPages: routesList,
       );

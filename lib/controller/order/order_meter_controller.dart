@@ -13,6 +13,7 @@ class OrderMeterController extends GetxController {
   TextEditingController meterController = TextEditingController();
   TextEditingController serialNumController = TextEditingController();
   TextEditingController remarkController = TextEditingController();
+  TextEditingController serialController = TextEditingController();
   ProductDetail? dropdownValue;
 
   List<ProductDetail> productDetail = [];
@@ -23,7 +24,8 @@ class OrderMeterController extends GetxController {
     super.onInit();
 
     getProductDetail();
-    getList();
+    // getList();
+    // meter();
   }
 
   getProductDetail() async {
@@ -38,6 +40,9 @@ class OrderMeterController extends GetxController {
 
       var a = productDetail.map((e) => e.serialNumber).toList();
       debugPrint("a------>>$a");
+
+      var meter = productDetail.map((e) => e.meters).toList();
+      debugPrint("meter------>>$meter");
     } else {
       Get.dialog(
         AlertDialog(
@@ -60,10 +65,21 @@ class OrderMeterController extends GetxController {
     }
   }
 
+  void onChangeItem(ProductDetail val) {
+    dropdownValue = val;
+    update();
+  }
+
   getList() {
     var b = productDetail.map((e) => e.serialNumber).toList();
     debugPrint("getList------------>>$b");
 
     return b;
   }
+  // meter() {
+  //   var meter = productDetail.map((e) => e.meters).toList();
+  //   debugPrint("------->>$meter");
+  //
+  //   return meter;
+  // }
 }
