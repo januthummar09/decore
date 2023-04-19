@@ -6,6 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChooseProductController extends GetxController {
+  List<Product> foundProduct = [];
+
+  bool isFirstTime = Get.arguments['isFirstTime'] ?? false;
+  int? index;
+  String? result;
+
   TextEditingController searchController = TextEditingController();
   List<Product> products = [];
 
@@ -14,13 +20,24 @@ class ChooseProductController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getData();
+
+    var arguments = Map<String, dynamic>.from(Get.arguments);
+    if (arguments.keys.contains('index')) {
+      index = arguments['index'];
+    }
   }
 
-  getData() async {
+  Future<void> getData() async {
     var response = await API.shared.productData();
+
     if (response.isSuccess) {
       products = response.data;
       debugPrint("products---------->>$products");
+      foundProduct = products;
+
+      // for (Map products in response) {
+      //   products.add(Product.fromJson(products));
+      // }
       update();
     } else {
       Get.dialog(
@@ -44,19 +61,23 @@ class ChooseProductController extends GetxController {
     }
   }
 
-  void searchProduct(String query) {
-    final suggestion = products.where((item) {
-      final productTitle = item.name.toLowerCase();
-      final input = query.toLowerCase();
-      return productTitle.contains(input);
-    }).toList();
-    if (query.isNotEmpty) {
-      products = suggestion;
+  runFilter(String enterString) {
+    List<Product> result = [];
+
+    if (enterString.isEmpty) {
+      result = products;
+      update();
+    } else {
+      result = products
+          .where(
+            (user) => user.name.toLowerCase().contains(
+                  enterString.toLowerCase(),
+                ),
+          )
+          .toList();
       update();
     }
-    // else {
-    //   products = products;
-    //   update();
-    // }
+
+    foundProduct = result;
   }
 }

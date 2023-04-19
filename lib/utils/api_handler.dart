@@ -1,8 +1,10 @@
+import 'package:decore/model/e_catalogue_model.dart';
 import 'package:decore/model/product_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/pending_order.dart';
 import '../model/product_detail_model.dart';
 
 class StoreData {
@@ -126,7 +128,7 @@ class API {
       if (result != null) {
         bool status = result['status'] as bool;
 
-        debugPrint('productData  status Response ------------->>$status');
+        // debugPrint('productData  status Response ------------->>$status');
 
         if (status) {
           var data = List<Map<String, dynamic>>.from(result['data']);
@@ -169,15 +171,15 @@ class API {
 
       if (result != null) {
         bool status = result['status'] as bool;
-        debugPrint('productDetail  status Response ------------->>$status');
+        // debugPrint('productDetail  status Response ------------->>$status');
 
         if (status) {
           var data = List<Map<String, dynamic>>.from(result['data']);
-          debugPrint('before convert List data ------------->>$data');
+          // debugPrint('before convert List data ------------->>$data');
 
           var list = data.map((e) => ProductDetail.fromJson(e)).toList();
 
-          debugPrint('after convert List data ------------->>$list');
+          // debugPrint('after convert List data ------------->>$list');
 
           return Result(isSuccess: true, data: list);
         } else {
@@ -224,12 +226,125 @@ class API {
       var result = response.data;
       debugPrint('Login Response 401 ==>$result');
       if (result != null) {
-        return Result(isSuccess: false, data: result);
+        return Result(isSuccess: false, data: result, message: result['status'].toString());
       } else {
         return Result(isSuccess: false, data: {});
       }
     } else {
       return Result(isSuccess: false, data: {});
+    }
+  }
+
+  Future<Result<Map<String, dynamic>>> createOrderList(List<Map<String, dynamic>> params) async {
+    Response response = await dio.post('/create-order', data: params);
+
+    // debugPrint("param--------->>$params");
+    // debugPrint("createOrder response--------->>$response");
+
+    if (response.statusCode == 200) {
+      var result = response.data;
+      debugPrint('result Response ------------->>$result');
+
+      if (result != null) {
+        return Result(isSuccess: true, data: result);
+      } else {
+        return Result(isSuccess: true, data: {});
+      }
+    } else if (response.statusCode == 401) {
+      //error
+      var result = response.data;
+      debugPrint('Login Response 401 ==>$result');
+      if (result != null) {
+        return Result(isSuccess: false, data: result, message: result['status'].toString());
+      } else {
+        return Result(isSuccess: false, data: {});
+      }
+    } else {
+      return Result(isSuccess: false, data: {});
+    }
+  }
+
+  Future<Result<List<PendingOrder>>> pendingOrder() async {
+    Response response = await dio.get('/orders');
+    debugPrint("pendingOrder  response fun-------->>$response");
+
+    if (response.statusCode == 200) {
+      var result = response.data;
+      // debugPrint('pendingOrder Response  data ------------->>$result');
+
+      if (result != null) {
+        bool status = result['status'] as bool;
+        // debugPrint('productDetail  status Response ------------->>$status');
+
+        if (status) {
+          var data = List<Map<String, dynamic>>.from(result['data']);
+          // debugPrint('before convert List data ------------->>$data');
+
+          var list = data.map((e) => PendingOrder.fromJson(e)).toList();
+
+          // debugPrint('after convert List data ------------->>$list');
+
+          return Result(isSuccess: true, data: list);
+        } else {
+          return Result(isSuccess: false, data: []);
+        }
+      } else {
+        return Result(isSuccess: false, data: []);
+      }
+    } else if (response.statusCode == 401) {
+      //error
+      var result = Map<String, dynamic>.from(response.data);
+
+      if (result.keys.contains('status')) {
+        return Result(isSuccess: false, data: [], message: result['status'].toString());
+      } else {
+        return Result(isSuccess: false, data: [], message: 'Something went wrong');
+      }
+    } else {
+      return Result(isSuccess: false, data: [], message: 'Something went wrong');
+    }
+  }
+
+  Future<Result<List<ECatalogueModel>>> catalogue() async {
+    Response response = await dio.post('/get-catalogues');
+    debugPrint("e_catalogue response--------->>$response");
+    if (response.statusCode == 200) {
+      var result = response.data;
+      if (result != null) {
+        bool status = result['status'] as bool;
+
+        if (status) {
+          var data = List<Map<String, dynamic>>.from(result['data']);
+
+          // debugPrint('before convert List data ------------->>$data');
+
+          var list = data.map((e) => ECatalogueModel.fromJson(e)).toList();
+
+          // debugPrint('after convert List data ------------->>$list');
+
+          return Result(isSuccess: true, data: list);
+        } else {
+          return Result(isSuccess: false, data: [], message: 'Something went wrong');
+        }
+      } else {
+        return Result(isSuccess: false, data: [], message: 'Something went wrong');
+      }
+    } else if (response.statusCode == 401) {
+      //error
+
+      var result = Map<String, dynamic>.from(response.data);
+
+      debugPrint('Login Response 401 ==>$result');
+      if (result.keys.contains('status')) {
+        return Result(isSuccess: false, data: [], message: result['status'].toString());
+      } else {
+        return Result(isSuccess: false, data: [], message: 'Something went wrong');
+      }
+    } else if (response.statusCode == 500) {
+      //error
+      return Result(isSuccess: false, data: [], message: 'Something went wrong');
+    } else {
+      return Result(isSuccess: false, data: []);
     }
   }
 }

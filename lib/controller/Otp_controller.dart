@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:decore/utils/api_handler.dart';
-import 'package:decore/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/constant.dart';
+import '../view/home_screen.dart';
 
 class OtpController extends GetxController {
   String mobileNumber = Get.arguments['mobileNumber'];

@@ -1,4 +1,5 @@
 import 'package:decore/controller/home_controller.dart';
+import 'package:decore/view/page_view/price_list/price_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,8 +18,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Set active = {};
-  // HomeController controller = Get.find<HomeController>();
-  final controller = Get.put<HomeController>(HomeController());
+  HomeController controller = Get.find<HomeController>();
+  // final controller = Get.put<HomeController>(HomeController());
   @override
   Widget build(BuildContext context) {
     List choiceChip = ['Orders', 'E Catalogue', 'Price List'];
@@ -50,18 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               (e) => InkWell(
                                 onTap: () {
                                   choiceChip.indexOf(e) == 0
-                                      ? controller.pageController.animateToPage(
+                                      ? controller.pageController!.animateToPage(
                                           0,
                                           duration: const Duration(milliseconds: 500),
                                           curve: Curves.fastLinearToSlowEaseIn,
                                         )
                                       : choiceChip.indexOf(e) == 1
-                                          ? controller.pageController.animateToPage(
+                                          ? controller.pageController!.animateToPage(
                                               1,
                                               duration: const Duration(milliseconds: 500),
                                               curve: Curves.fastLinearToSlowEaseIn,
                                             )
-                                          : controller.pageController.animateToPage(
+                                          : controller.pageController!.animateToPage(
                                               2,
                                               duration: const Duration(milliseconds: 500),
                                               curve: Curves.fastLinearToSlowEaseIn,
@@ -90,24 +91,27 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             Expanded(
-              child: PageView(
-                controller: controller.pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    value == 0
-                        ? controller.selectedIndex = 0
-                        : value == 1
-                            ? controller.selectedIndex = 1
-                            : controller.selectedIndex = 2;
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: PageView(
+                  controller: controller.pageController,
+                  onPageChanged: (value) {
+                    setState(() {
+                      value == 0
+                          ? controller.selectedIndex = 0
+                          : value == 1
+                              ? controller.selectedIndex = 1
+                              : controller.selectedIndex = 2;
 
-                    // debugPrint("Selection Index------->>$value");
-                  });
-                },
-                children: const [
-                  OrderPage(),
-                  ECatalogue(),
-                  Text("data 3"),
-                ],
+                      // debugPrint("Selection Index------->>$value");
+                    });
+                  },
+                  children: [
+                    const OrderPage(),
+                    ECatalogueScreen(),
+                    PriceScreen(),
+                  ],
+                ),
               ),
             ),
           ],

@@ -41,6 +41,10 @@ dependencies:
   pinput: ^2.2.31
   shared_preferences: ^2.1.0
   dropdown_plus: ^0.0.9
+  awesome_dropdown: ^0.0.4
+  cached_network_image: ^3.2.3
+  syncfusion_flutter_pdfviewer: ^21.1.39
+
 
 
 dev_dependencies:

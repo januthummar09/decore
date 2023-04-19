@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../controller/order/choose_category_controller.dart';
+import '../../../controller/order/orders/choose_category_controller.dart';
 
 class ChooseCategoryBinding implements Bindings {
   @override

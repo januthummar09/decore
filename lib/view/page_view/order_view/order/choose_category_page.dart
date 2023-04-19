@@ -22,7 +22,10 @@ class ChooseCategoryPage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(RoutesName.chooseProductScreen);
+                  Get.toNamed(
+                    RoutesName.chooseProductScreen,
+                    arguments: {'isFirstTime': false},
+                  );
                 },
                 child: Container(
                     padding: const EdgeInsets.all(10),
@@ -49,7 +52,7 @@ class ChooseCategoryPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/SearchPage');
+                  // Navigator.pushNamed(context, '/SearchPage');
                 },
                 child: Container(
                     padding: const EdgeInsets.all(10),

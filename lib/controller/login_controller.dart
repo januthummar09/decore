@@ -3,9 +3,17 @@ import 'package:decore/utils/constant.dart';
 import 'package:decore/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 
 class LoginController extends GetxController {
   TextEditingController phoneNumberController = TextEditingController();
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    phoneNumberController.setText("9925787515");
+  }
 
   Future<void> login() async {
     var response = await API.shared.login(phoneNumberController.text);

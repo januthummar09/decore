@@ -1,45 +1,35 @@
+import 'package:decore/controller/order/orders/order_controller.dart';
+import 'package:decore/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../utils/constant.dart';
-import 'choose_category_page.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OrderController controller = Get.put(OrderController());
+
     List allRoomTypeList = [
       {
         'image': allOrders,
         'title': 'Orders',
-        // 'navigate': '/AllOrdersPage',
-        'navigate': const ChooseCategoryPage(),
       },
       {
         'image': pending,
         'title': 'Pending',
-        'navigate': const ChooseCategoryPage(),
       },
       {
         'image': dispatch,
         'title': 'Dispatch',
-        'navigate': const ChooseCategoryPage(),
       },
       {
         'image': partDispatch2,
         'title': 'Part Dispatch',
-        'navigate': const ChooseCategoryPage(),
       },
-      // {
-      //   'image': reports,
-      //   'title': 'Reports',
-      // },
-      // {
-      //   'image': rates,
-      //   'title': 'Rates',
-      // },
     ];
 
     return Column(
@@ -58,9 +48,34 @@ class OrderPage extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  Get.to(allRoomTypeList[index]['navigate']);
+                onTap: () async {
+                  // Get.to(allRoomTypeList[index]['navigate']);
                   // Get.to(allRoomTypeList[index]['navigation']);
+
+                  switch (index) {
+                    case 0:
+                      debugPrint("Tap index ==>$index");
+
+                      /// .then value is given in future
+                      var value = await controller.popupDialog();
+
+                      debugPrint("value--->>$value");
+
+                      break;
+                    case 1:
+                      Get.toNamed(RoutesName.allOrderPendingScreen);
+                      break;
+                    case 2:
+                      Get.toNamed(RoutesName.dispatchScreen);
+                      break;
+
+                    case 3:
+                      Get.toNamed(RoutesName.partDispatchScreen);
+                      break;
+                    // Add cases for other indices
+                    default:
+                      break;
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -94,4 +109,28 @@ class OrderPage extends StatelessWidget {
       ],
     );
   }
+
+  // Widget _buildRow(String name, double score) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+  //     child: Column(
+  //       children: <Widget>[
+  //         SizedBox(height: 12),
+  //         Container(height: 2, color: Colors.redAccent),
+  //         SizedBox(height: 12),
+  //         Row(
+  //           children: <Widget>[
+  //             Text(name),
+  //             Spacer(),
+  //             Container(
+  //               decoration: BoxDecoration(color: Colors.yellow[900], borderRadius: BorderRadius.circular(20)),
+  //               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+  //               child: Text('$score'),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

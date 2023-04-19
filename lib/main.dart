@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   StoreData.shared.getInstance();
+
   runApp(const MyApp());
 }
 
